@@ -2,34 +2,33 @@
 ##and calculates the mean excluding missing values
 pollutantmean <- function(directory, pollutant, id = 1:322){
   ## directory is where the files are located
-  count <- 0
-  for(file in constructFileList){
+  dataVector <- NULL
+  for(file in constructFileListNoDirectory(directory,id)){
     
     dataTable <- read.csv(paste(directory,"\\",file,sep = ""))
     
-    dataVector <- NULL
+
     #pollutant is sulfate or nitrate
     if(pollutant == "sulfate"){
-      dataVector <- dataTable$sulfate
+      dataVector <- c(dataVector, dataTable$sulfate)
     }
     else{
-      dataVector <-dataTable$nitrate
+      dataVector <- c(dataVector, dataTable$nitrate)
     }
   }
   
-  dataVector
+  mean(dataVector[!is.na(dataVector)])
   ##id is a vector of the sensors to check
   
 }
 
-constructFileList <- function(directory,id){
+constructFileListNoDirectory <- function(directory,id){
   count <- 0
   fileList <- c()
   for(file in dir(directory)){
     count <- count+1
-    if (!is.na(id[id==count]))
+    if (length(id[id==count])>0)
     {
-      print(count)
       fileList<- c(fileList,file)
     }
   }
