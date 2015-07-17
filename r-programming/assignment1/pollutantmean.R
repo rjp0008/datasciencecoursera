@@ -1,6 +1,6 @@
 ##parses through id files in directory for pollutant specified
 ##and calculates the mean excluding missing values
-pollutantmean <- function(directory, pollutant, id = 1:322){
+pollutantmean <- function(directory, pollutant, id = 1:332){
   ## directory is where the files are located
   dataVector <- NULL
   for(file in constructFileListNoDirectory(directory,id)){
@@ -9,13 +9,17 @@ pollutantmean <- function(directory, pollutant, id = 1:322){
     
 
     #pollutant is sulfate or nitrate
+    removeNas<-NULL
     if(pollutant == "sulfate"){
-      dataVector <- c(dataVector, dataTable$sulfate)
+      removeNas <-  dataTable$sulfate
     }
     else{
-      dataVector <- c(dataVector, dataTable$nitrate)
+      removeNas <- dataTable$nitrate
     }
+    removeNas <- removeNas[!is.na(removeNas)]
+    dataVector <- c(dataVector,removeNas)
   }
+  
   
   mean(dataVector[!is.na(dataVector)])
   ##id is a vector of the sensors to check
