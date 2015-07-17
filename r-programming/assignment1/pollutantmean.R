@@ -22,15 +22,12 @@ pollutantmean <- function(directory, pollutant, id = 1:322){
   
 }
 
+
 constructFileListNoDirectory <- function(directory,id){
-  count <- 0
-  fileList <- c()
-  for(file in dir(directory)){
-    count <- count+1
-    if (length(id[id==count])>0)
-    {
-      fileList<- c(fileList,file)
-    }
+  files <- dir(directory)
+  fileList<-c()
+  for(sensor in id){
+    fileList <- c(fileList,files[sensor])
   }
   fileList
 }
